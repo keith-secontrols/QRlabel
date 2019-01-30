@@ -138,7 +138,6 @@ public class PCPrint : System.Drawing.Printing.PrintDocument
             canvas.DrawLine(new Pen(Color.Blue), X - rad, Y, X - rad, Y + vpitch * scale);
             canvas.DrawLine(new Pen(Color.Blue), X + rad, Y, X + rad, Y + vpitch * scale);
 
-
             RectangleF rect = new RectangleF(X - 30, Y - 30, 60f, 60f);
             canvas.DrawImage(PCPrint.makeQR(prefix + n.ToString()), rect);
 
@@ -150,11 +149,7 @@ public class PCPrint : System.Drawing.Printing.PrintDocument
             float Y2 = Y + vpitch * scale;
             canvas.DrawEllipse(new Pen(Color.Gray), X - rad, Y2 - rad, rad * 2, rad * 2);
 
-
-
             canvas.DrawImage(logo, new RectangleF(X - 25, Y2 - 30, 50f, 50f / 1.62f));  //aspect ratio 1.62
-
-
 
             string MAC = "70-B3-D5-2F-C" + (n / 256).ToString("X") + "-" + (n & 255).ToString("X2");
             size = canvas.MeasureString(MAC, MACfont);
