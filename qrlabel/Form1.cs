@@ -8,12 +8,14 @@ namespace a4label
 {
     public partial class Form1 : Form
     {
+        AboutBox1 aboutBox;
         int changeTime = 0;
         int pageN = 0;
 
         public Form1()
         {
             InitializeComponent();
+            aboutBox = new AboutBox1();
         }
 
     
@@ -217,7 +219,7 @@ namespace a4label
         }
         private void buttonPrint_Click(object sender, EventArgs e)
         {
-            PrintPreviewDialog printPrvDlg = new PrintPreviewDialog();
+            /*PrintPreviewDialog printPrvDlg = new PrintPreviewDialog();
             printPrvDlg.Width = 600;
             printPrvDlg.Height = 1000;
             printPrvDlg.Document = printDocument1;
@@ -226,13 +228,9 @@ namespace a4label
             {
                 //     printDocument1.Print();
             }
+            */
+            printDocument1.Print();
         }
-
-
-
-
-
-
 
         private void printDocument1_QueryPageSettings(object sender, QueryPageSettingsEventArgs e)
         {
@@ -283,6 +281,17 @@ namespace a4label
         private void Button1_Click(object sender, EventArgs e)
         {
             printDocument1.Print();
+        }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void HelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            aboutBox.Show();
+            aboutBox.BringToFront();
         }
     }
 

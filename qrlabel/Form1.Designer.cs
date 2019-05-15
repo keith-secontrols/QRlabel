@@ -56,11 +56,12 @@ namespace a4label
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.labelLayout1 = new a4label.LabelLayout();
-            this.printDialog1 = new System.Windows.Forms.PrintDialog();
-            this.button1 = new System.Windows.Forms.Button();
             this.listBoxHistory = new System.Windows.Forms.ListBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.printDialog1 = new System.Windows.Forms.PrintDialog();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.labelLayout1 = new a4label.LabelLayout();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -131,7 +132,7 @@ namespace a4label
             this.numericUpDown2.Size = new System.Drawing.Size(88, 34);
             this.numericUpDown2.TabIndex = 3;
             this.numericUpDown2.Value = new decimal(new int[] {
-            2,
+            54,
             0,
             0,
             0});
@@ -200,7 +201,7 @@ namespace a4label
             this.log.Name = "log";
             this.log.ReadOnly = true;
             this.log.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.log.Size = new System.Drawing.Size(735, 608);
+            this.log.Size = new System.Drawing.Size(735, 602);
             this.log.TabIndex = 11;
             this.log.TextChanged += new System.EventHandler(this.log_TextChanged);
             // 
@@ -208,7 +209,8 @@ namespace a4label
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem});
+            this.openToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 3, 0, 3);
@@ -221,7 +223,8 @@ namespace a4label
             this.openToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem1,
             this.saveToolStripMenuItem,
-            this.printToolStripMenuItem});
+            this.printToolStripMenuItem,
+            this.exitToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
             this.openToolStripMenuItem.Text = "File";
@@ -229,21 +232,21 @@ namespace a4label
             // openToolStripMenuItem1
             // 
             this.openToolStripMenuItem1.Name = "openToolStripMenuItem1";
-            this.openToolStripMenuItem1.Size = new System.Drawing.Size(120, 26);
+            this.openToolStripMenuItem1.Size = new System.Drawing.Size(216, 26);
             this.openToolStripMenuItem1.Text = "Open";
             this.openToolStripMenuItem1.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // printToolStripMenuItem
             // 
             this.printToolStripMenuItem.Name = "printToolStripMenuItem";
-            this.printToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
+            this.printToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.printToolStripMenuItem.Text = "Print";
             this.printToolStripMenuItem.Click += new System.EventHandler(this.PrintToolStripMenuItem_Click);
             // 
@@ -254,8 +257,7 @@ namespace a4label
             // 
             // buttonSave
             // 
-            this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSave.Location = new System.Drawing.Point(472, 9);
+            this.buttonSave.Location = new System.Drawing.Point(14, 20);
             this.buttonSave.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(94, 38);
@@ -288,7 +290,7 @@ namespace a4label
             // checkBoxUnlock
             // 
             this.checkBoxUnlock.AutoSize = true;
-            this.checkBoxUnlock.Location = new System.Drawing.Point(50, 30);
+            this.checkBoxUnlock.Location = new System.Drawing.Point(133, 30);
             this.checkBoxUnlock.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.checkBoxUnlock.Name = "checkBoxUnlock";
             this.checkBoxUnlock.Size = new System.Drawing.Size(90, 28);
@@ -343,18 +345,39 @@ namespace a4label
             this.tabPage1.Text = "History";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // listBoxHistory
+            // 
+            this.listBoxHistory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxHistory.FormattingEnabled = true;
+            this.listBoxHistory.ItemHeight = 22;
+            this.listBoxHistory.Location = new System.Drawing.Point(3, 3);
+            this.listBoxHistory.Name = "listBoxHistory";
+            this.listBoxHistory.Size = new System.Drawing.Size(740, 667);
+            this.listBoxHistory.TabIndex = 0;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.checkBoxUnlock);
             this.tabPage2.Controls.Add(this.log);
             this.tabPage2.Controls.Add(this.buttonSave);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 31);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(746, 679);
+            this.tabPage2.Size = new System.Drawing.Size(746, 673);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Layout";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // printDialog1
+            // 
+            this.printDialog1.UseEXDialog = true;
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // labelLayout1
             // 
@@ -366,29 +389,12 @@ namespace a4label
             this.labelLayout1.Size = new System.Drawing.Size(736, 708);
             this.labelLayout1.TabIndex = 18;
             // 
-            // printDialog1
+            // helpToolStripMenuItem
             // 
-            this.printDialog1.UseEXDialog = true;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(1159, 57);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(268, 123);
-            this.button1.TabIndex = 21;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
-            // 
-            // listBoxHistory
-            // 
-            this.listBoxHistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxHistory.FormattingEnabled = true;
-            this.listBoxHistory.ItemHeight = 22;
-            this.listBoxHistory.Location = new System.Drawing.Point(3, 3);
-            this.listBoxHistory.Name = "listBoxHistory";
-            this.listBoxHistory.Size = new System.Drawing.Size(740, 667);
-            this.listBoxHistory.TabIndex = 0;
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
+            this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.HelpToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -396,7 +402,6 @@ namespace a4label
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1495, 920);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.label5);
@@ -461,8 +466,9 @@ namespace a4label
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.PrintDialog printDialog1;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListBox listBoxHistory;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
     }
 }
 

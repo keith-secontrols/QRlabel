@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("qrlabel")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("QRlabel")]
+[assembly: AssemblyDescription("Prints serial numbered labels and QR codes")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("qrlabel")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCompany("Innovodesign Ltd")]
+[assembly: AssemblyProduct("QRlabel")]
+[assembly: AssemblyCopyright("Copyright ©  Innovodesign 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
