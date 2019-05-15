@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace qrlabel
+namespace a4label
 {
     static class Program
     {

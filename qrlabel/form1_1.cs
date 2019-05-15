@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
@@ -16,7 +16,46 @@ namespace a4label
             InitializeComponent();
         }
 
-    
+        private void buttonPrint_Click(object sender, EventArgs e)
+        {
+            PrintPreviewDialog printPrvDlg = new PrintPreviewDialog();
+            printPrvDlg.Width = 600;
+            printPrvDlg.Height = 1000;
+            printPrvDlg.Document = printDocument1;
+
+            if (printPrvDlg.ShowDialog() == DialogResult.OK)
+            {
+           //     printDocument1.Print();
+            }
+        }
+
+
+
+
+
+        private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            pageN++;
+            int start = (int)numericUpDown1.Value;
+
+            int labelsPerPage = labelLayout1.repeatAcross * labelLayout1.repeatDown;
+
+            int n = (int)numericUpDown2.Value;
+
+            start = start + (pageN - 1) * labelsPerPage;
+            n = n - (pageN - 1) * labelsPerPage;
+
+            e.HasMorePages = false;
+
+            if (n > labelsPerPage)
+            {
+                n = labelsPerPage;
+                e.HasMorePages = true;
+            }
+
+            labelLayout1.drawPage(start, n, e.Graphics);
+        }
+
         private void numericUpDown_ValueChanged(object sender, EventArgs e)
         {
             labelLayout1.setRange((int)numericUpDown1.Value, (int)numericUpDown2.Value);
@@ -55,7 +94,6 @@ namespace a4label
         {
             labelLayout1.readSettings(log.Text);
             setLabelErrors();
-            listBoxHistory.Items.AddRange(labelLayout1.history.ToArray());
         }
 
         private void setLabelErrors()
@@ -134,7 +172,7 @@ namespace a4label
 
         }
 
-     
+       
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
@@ -215,25 +253,11 @@ namespace a4label
 
             }
         }
-        private void buttonPrint_Click(object sender, EventArgs e)
+
+        private void TextBoxVersion_TextChanged(object sender, EventArgs e)
         {
-            PrintPreviewDialog printPrvDlg = new PrintPreviewDialog();
-            printPrvDlg.Width = 600;
-            printPrvDlg.Height = 1000;
-            printPrvDlg.Document = printDocument1;
-
-            if (printPrvDlg.ShowDialog() == DialogResult.OK)
-            {
-                //     printDocument1.Print();
-            }
+            labelLayout1.setVersion(textBoxVersion.Text);
         }
-
-
-
-
-
-
-
         private void printDocument1_QueryPageSettings(object sender, QueryPageSettingsEventArgs e)
         {
 
@@ -248,41 +272,12 @@ namespace a4label
                     log.Text += "\r\n";
                 log.Text += labelLayout1.addHistory() + "\r\n";
                 Save();
+
             }
         }
-
-        private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
+        private void Button1_Click_1(object sender, EventArgs e)
         {
-            pageN++;
-            int start = (int)numericUpDown1.Value;
 
-            int labelsPerPage = labelLayout1.repeatAcross * labelLayout1.repeatDown;
-
-            int n = (int)numericUpDown2.Value;
-
-            start = start + (pageN - 1) * labelsPerPage;
-            n = n - (pageN - 1) * labelsPerPage;
-
-            e.HasMorePages = false;
-
-            if (n > labelsPerPage)
-            {
-                n = labelsPerPage;
-                e.HasMorePages = true;
-            }
-
-            labelLayout1.drawPage(start, n, e.Graphics);
-        }
-
-
-        private void TextBoxVersion_TextChanged(object sender, EventArgs e)
-        {
-            labelLayout1.setVersion(textBoxVersion.Text);
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            printDocument1.Print();
         }
     }
 
