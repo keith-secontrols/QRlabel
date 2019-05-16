@@ -21,12 +21,12 @@ QRlabel uses a text file to describe the layout of the label and the label sheet
 
 #### Comments start with a //
 ```
-//Label Template for NVLink2
+// Label Template for Widget label
 // 19mm round labels on A4 sheet
 // Labels-Direct.co.uk SLR19
 ```
 #### Page layout
-Modify these entries to suit your label sheet dimensions and printer.
+These entries are required and may be modified to suit your label sheet dimensions and printer.
 ```
 topleft:7.64,30.78
 pitch:21.0,41.74
@@ -42,7 +42,7 @@ valid_serial_min:0
 valid_serial_max:4095
 ```
 #### Fields and values
-Fields are automatically generated values set by the serial number as follows
+Fields are automatically generated values set by the serial number. 
 
 Field | Replaced by
 ---|---
@@ -64,9 +64,9 @@ cy | Centre-Y of label
 
 Custom fields can also be added by listing values in square brackets:
 ```
+[partnumber]=NXS 0004 0013
 [QRlink]=http://your.website.here/find/[N]
 [MACID]=01-23-45-67-8[MAC12]
-[partnumber]=NXS 0004 0013
 ```
 
 #### Layout
@@ -99,6 +99,8 @@ line:-9.2,8,-9.2,-8
 line:-4,-2,-4,2
 line:4,-2,4,2
 ```
+Co-ordinates for text, QRcode and graphic are centre-x,centre-y.
+Graphic files should be placed in the same folder as the label file.
 
 ## Print records
 When labels are printed, lines are appended to the bottom of the label file. For this reason, the label file should not be read-only.
