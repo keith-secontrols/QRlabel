@@ -19,13 +19,13 @@ The user selects the first serial number and the number of labels to be printed,
 ## Editing the layout
 QRlabel uses a text file to describe the layout of the label and the label sheet. Launch the QRlabel program, select layout tab and check 'unlock'. This allows the layout script to be edited, with changes shown live on the right panel.
 
-### Comments start with a //
+#### Comments start with a //
 ```
 //Label Template for NVLink2
 // 19mm round labels on A4 sheet
 // Labels-Direct.co.uk SLR19
 ```
-### Page layout
+#### Page layout
 Modify these entries to suit your label sheet dimensions and printer.
 ```
 topleft:7.64,30.78
@@ -33,7 +33,7 @@ pitch:21.0,41.74
 across:9
 down:6
 ```
-### Valid serial number range
+#### Valid serial number range
 May be omitted if not required
 ```
 // Serial numbers greater than 4095 will require a new MAC-ID block
@@ -41,7 +41,7 @@ May be omitted if not required
 valid_serial_min:0
 valid_serial_max:4095
 ```
-### Fields and values
+#### Fields and values
 Fields are automatically generated values set by the serial number as follows
 
 Field | Replaced by
@@ -53,7 +53,7 @@ Field | Replaced by
 [MAC12] | '0-01' (hexadecimal)
 [version] | from version textbox
 
-The label size also generates four special numeric values from the width and height of the label
+The system also generates four special numeric values from the width and height of the label
 
 Field | Value
 ---|---
@@ -62,14 +62,14 @@ cx | Centre-X of label
 y | Height of label
 cy | Centre-Y of label
 
-In addition, custom fields can also be added by listing values in square brackets:
+Custom fields can also be added by listing values in square brackets:
 ```
 [QRlink]=http://your.website.here/find/[N]
 [MACID]=01-23-45-67-8[MAC12]
 [partnumber]=NXS 0004 0013
 ```
 
-## Layout
+#### Layout
 ```javascript
 //Top label, change origin to centre with offset command
 offset:cx,cy*0.5
