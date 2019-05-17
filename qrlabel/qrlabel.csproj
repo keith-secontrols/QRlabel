@@ -23,13 +23,13 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>https://github.com/innovodesign/QRlabel/publish/</InstallUrl>
+    <InstallUrl>https://raw.githubusercontent.com/innovodesign/QRlabel/master/qrlabel/publish/</InstallUrl>
     <SupportUrl>https://github.com/innovodesign/QRlabel</SupportUrl>
     <ProductName>QRlabel</ProductName>
     <PublisherName>Innovodesign Ltd</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>7</ApplicationRevision>
+    <ApplicationRevision>8</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
