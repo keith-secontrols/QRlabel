@@ -60,8 +60,8 @@ namespace a4label
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listBoxHistory = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.labelLayout1 = new a4label.LabelLayout();
+            this.printDialog1 = new System.Windows.Forms.PrintDialog();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -201,7 +201,7 @@ namespace a4label
             this.log.Name = "log";
             this.log.ReadOnly = true;
             this.log.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.log.Size = new System.Drawing.Size(735, 608);
+            this.log.Size = new System.Drawing.Size(735, 614);
             this.log.TabIndex = 11;
             this.log.TextChanged += new System.EventHandler(this.log_TextChanged);
             // 
@@ -374,17 +374,13 @@ namespace a4label
             this.tabPage2.Controls.Add(this.checkBoxUnlock);
             this.tabPage2.Controls.Add(this.log);
             this.tabPage2.Controls.Add(this.buttonSave);
-            this.tabPage2.Location = new System.Drawing.Point(4, 31);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(746, 673);
+            this.tabPage2.Size = new System.Drawing.Size(746, 679);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Layout";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // printDialog1
-            // 
-            this.printDialog1.UseEXDialog = true;
             // 
             // labelLayout1
             // 
@@ -396,11 +392,14 @@ namespace a4label
             this.labelLayout1.Size = new System.Drawing.Size(736, 708);
             this.labelLayout1.TabIndex = 18;
             // 
+            // printDialog1
+            // 
+            this.printDialog1.UseEXDialog = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1495, 920);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.splitContainer1);
