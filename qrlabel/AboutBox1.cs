@@ -22,5 +22,10 @@ namespace a4label
         {
             this.Close();
         }
+
+        private void LinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/innovodesign/QRlabel");
+        }
     }
 }

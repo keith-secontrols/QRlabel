@@ -11,62 +11,27 @@ namespace a4label
         AboutBox1 aboutBox;
         int changeTime = 0;
         int pageN = 0;
+        const string defaultScript =
+            "// 19mm round labels on A4 sheet\r\n" +
+            "// Labels-Direct.co.uk SLR19\r\n" +
+           "topleft:7.64,30.78\r\n" +
+            "pitch:21.0,41.74\r\n" +
+            "across:9\r\n" +
+            "down:6\r\n\r\n" +
+            "[version]=V1.00\r\n\r\n" +
+            "pen:BLUE,0.5\r\n" +
+            "circle:cx,y*0.25,9\r\n" +
+            "circle:cx,y*0.75,9\r\n" +
+            "line:0,cy,x,cy\r\n" +
+            "QRcode:cx,y*0.25,14,http://dilbert.com\r\n" +
+            "text:cx,y-4,[version]\r\n" +
+            "text:cx,y-9,[NNNNN]\r\n";
+
 
         public Form1()
         {
             InitializeComponent();
             aboutBox = new AboutBox1();
-        }
-
-    
-        private void numericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            labelLayout1.setRange((int)numericUpDown1.Value, (int)numericUpDown2.Value);
-            label1.Text = labelLayout1.pageFit();
-            if (labelLayout1.canPrint())
-            {
-                buttonPrint.Enabled = true;
-                buttonPrint.Text = "Print";
-                buttonPrint.ForeColor = Color.Black;
-            }
-            else
-            {
-                buttonPrint.Enabled = false;
-                buttonPrint.Text = "Invalid serial number\r\nSee layout script";
-                buttonPrint.ForeColor = Color.Red;
-
-            }
-            setLabelErrors();
-        }
-
-
-
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                Properties.Settings.Default.filename = openFileDialog1.FileName;
-                Properties.Settings.Default.Save();
-                loadLog(openFileDialog1.FileName);
-            }
-        }
-
-
-
-        private void ReadSettings()
-        {
-            labelLayout1.readSettings(log.Text);
-            setLabelErrors();
-            listBoxHistory.Items.AddRange(labelLayout1.history.ToArray());
-        }
-
-        private void setLabelErrors()
-        {
-            labelErrors.Text = string.Join("\r\n", labelLayout1.errors);
-            if ((labelLayout1.errors.Count > 0) && (labelLayout1.overlaps.Count > 0))
-                labelErrors.Text += "\r\n";
-            labelErrors.Text += string.Join("\r\n", labelLayout1.overlaps);
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -84,14 +49,15 @@ namespace a4label
             {
                 loadLog(fn);
             }
-            else if (MessageBox.Show("Cannot load file" + fn + "\nUsing default layout", "Problem") == DialogResult.OK)
+            else if (MessageBox.Show("Cannot load file " + fn + "\nUsing default layout", "Problem") == DialogResult.OK)
             {
+                log.Text = defaultScript;
                 ReadSettings();
             }
 
             string printer = Properties.Settings.Default.printer;
             bool foundPrinter = false;
-            foreach(string p in PrinterSettings.InstalledPrinters)
+            foreach (string p in PrinterSettings.InstalledPrinters)
                 foundPrinter |= (printer == p);
 
             if (!foundPrinter)
@@ -100,7 +66,8 @@ namespace a4label
                 {
                     MessageBox.Show("No Printers installed");
                 }
-                else {
+                else
+                {
                     PrinterSettings settings = new PrinterSettings();
                     printer = settings.PrinterName;
                     Properties.Settings.Default.printer = printer;
@@ -110,11 +77,63 @@ namespace a4label
                 }
             }
             printDocument1.PrinterSettings.PrinterName = printer;
-            this.Text = fn + "  :  " + printer;
+            SetTitle();
+        }
+
+        private void numericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            labelLayout1.setRange((int)numericUpDown1.Value, (int)numericUpDown2.Value);
+            label1.Text = labelLayout1.pageFit();
+            if (labelLayout1.canPrint())
+            {
+                buttonPrint.Enabled = true;
+                buttonPrint.Text = "Print";
+                buttonPrint.ForeColor = Color.Black;
+            }
+            else
+            {
+                buttonPrint.Enabled = false;
+                buttonPrint.Text = "Invalid serial number\r\nSee layout script";
+                buttonPrint.ForeColor = Color.Red;
+            }
+            setLabelErrors();
+        }
 
 
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Properties.Settings.Default.filename = openFileDialog1.FileName;
+                Properties.Settings.Default.Save();
+                loadLog(openFileDialog1.FileName);
+                SetTitle();
+            }
+        }
+
+        private void SetTitle()
+        {
+            this.Text = Properties.Settings.Default.filename + "  :  " + Properties.Settings.Default.printer;
+        }
+
+        private void ReadSettings()
+        {
+            labelLayout1.readSettings(log.Text);
+            setLabelErrors();
+            listBoxHistory.Items.AddRange(labelLayout1.history.ToArray());
+        }
+
+
+        private void setLabelErrors()
+        {
+            labelErrors.Text = string.Join("\r\n", labelLayout1.errors);
+            if ((labelLayout1.errors.Count > 0) && (labelLayout1.overlaps.Count > 0))
+                labelErrors.Text += "\r\n";
+            labelErrors.Text += string.Join("\r\n", labelLayout1.overlaps);
 
         }
+
 
         private void loadLog(string filename)
         {
@@ -123,7 +142,6 @@ namespace a4label
                 StreamReader sr = new StreamReader(filename);
                 log.Text = sr.ReadToEnd();
                 sr.Close();
-
             }
             catch (Exception e)
             {
@@ -133,15 +151,14 @@ namespace a4label
             ReadSettings();
             numericUpDown1.Value = labelLayout1.lastPrintedSerno + 1;
             textBoxVersion.Text = labelLayout1.lastPrintedVersion;
-
         }
 
-     
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
             Save();
         }
+
 
         private void Save()
         {
@@ -157,6 +174,7 @@ namespace a4label
             }
         }
 
+
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveFileDialog1.FileName = Properties.Settings.Default.filename;
@@ -168,31 +186,29 @@ namespace a4label
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            ReadSettings();
-            labelLayout1.Invalidate();
-        }
 
         private void SaveSettings()
         {
             string old = log.Text;
             if (!log.Text.EndsWith("\r\n"))
                 log.Text += "\r\n";
-            //            if (textBoxQR.Text != labelLayout1.QRlink())
-            //                log.Text += "[QRlink]=" + labelLayout1.QRlink();
             if (textBoxVersion.Text != labelLayout1.version())
                 log.Text += "[version]=" + labelLayout1.version();
             if (log.Text != old)
                 Save();
         }
 
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (changeTime > 0)
                 if (--changeTime == 0)
-                    button3_Click(null, null);
+                {
+                    ReadSettings();
+                    labelLayout1.Invalidate();
+                }
         }
+
 
         private void log_TextChanged(object sender, EventArgs e)
         {
@@ -200,10 +216,12 @@ namespace a4label
                 changeTime = 30;
         }
 
+
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             log.ReadOnly = !checkBoxUnlock.Checked;
         }
+
 
         private void PrintToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -214,28 +232,22 @@ namespace a4label
                 printDocument1.PrinterSettings.Copies = printDialog1.PrinterSettings.Copies;
                 Properties.Settings.Default.printer = printDialog1.PrinterSettings.PrinterName;
                 Properties.Settings.Default.Save();
-
+                SetTitle();
             }
         }
+
+
         private void buttonPrint_Click(object sender, EventArgs e)
         {
-            /*PrintPreviewDialog printPrvDlg = new PrintPreviewDialog();
-            printPrvDlg.Width = 600;
-            printPrvDlg.Height = 1000;
-            printPrvDlg.Document = printDocument1;
-
-            if (printPrvDlg.ShowDialog() == DialogResult.OK)
-            {
-                //     printDocument1.Print();
-            }
-            */
             printDocument1.Print();
         }
+
 
         private void printDocument1_QueryPageSettings(object sender, QueryPageSettingsEventArgs e)
         {
 
         }
+
 
         private void printDocument1_BeginPrint(object sender, PrintEventArgs e)
         {
@@ -248,6 +260,7 @@ namespace a4label
                 Save();
             }
         }
+
 
         private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
         {
@@ -278,21 +291,25 @@ namespace a4label
             labelLayout1.setVersion(textBoxVersion.Text);
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+
+        private void ButtonPrint_Click(object sender, EventArgs e)
         {
             printDocument1.Print();
         }
+
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+
         private void HelpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             aboutBox.Show();
             aboutBox.BringToFront();
         }
+
     }
 
 

@@ -23,7 +23,7 @@ namespace a4label
         public List<PrintRecord> history = new List<PrintRecord>();
 
         private int serialNum;
-        private int firstNum,lastNum;
+        private int firstNum, lastNum;
         public int lastPrintedSerno = -1;
         public string lastPrintedVersion = "";
         public int repeatAcross = 1;
@@ -62,7 +62,7 @@ namespace a4label
             else if (text.Contains("[N]"))
                 text = text.Replace("[N]", serialNum.ToString());
             else if (text.Contains("[MAC12]"))
-                text = text.Replace("[MAC12]", (serialNum / 256).ToString("X") + "-" + (serialNum & 255).ToString("X2"));
+                text = text.Replace("[MAC12]", ((serialNum / 256) & 0x0f).ToString("X") + "-" + (serialNum & 255).ToString("X2"));
 
             foreach (string key in fields.Keys)
             {
@@ -75,10 +75,12 @@ namespace a4label
             return text;
         }
 
+
         internal bool canPrint()
         {
             return !((serialNum < validSerialMin) || (lastNum > validSerialMax));
         }
+
 
         internal void setRange(int start, int count)
         {
@@ -91,10 +93,12 @@ namespace a4label
             lastNum = serialNum + count - 1;
         }
 
+
         internal int labelsPerPage()
         {
             return repeatDown * repeatAcross;
         }
+
 
         internal string[] readSettings(string text)
         {
@@ -181,9 +185,7 @@ namespace a4label
                         string[] s = ln.Substring(4).Split(',');
                         if (s.Length == 1)
                             pen = new Pen(Color.FromName(s[0]));
-
                         pen = new Pen(Color.FromName(s[0]), float.Parse(s[1]));
-
                     }
                     else if (ln.StartsWith("text:"))
                     {
@@ -274,20 +276,17 @@ namespace a4label
                 if (pr.overlaps(firstNum, lastNum))
                     overlaps.Add(pr.ToString());
 
-
-
-            //                label1.Text = "Only 4096 MAC addresses available|Firmware changes are required and new MAC prefix";
-
-
-
             return s;
         }
+
 
         internal void setVersion(string text)
         {
             fields["[version]"] = text;
             this.Invalidate();
         }
+
+
         internal string addHistory()
         {
             PrintRecord pr = new PrintRecord(DateTime.Now, firstNum, lastNum, fields["[version]"]);
@@ -295,42 +294,73 @@ namespace a4label
             return "PRINTED:" + pr.ToString();
         }
 
+
         public float eval(string v)
         {
+            // recursive expression evaluation
             v = v.Trim();
-
             if (v.StartsWith("-"))
                 return -eval(v.Substring(1));
 
-            int pos;
-            pos = Math.Max(v.IndexOf("+"), v.IndexOf("-"));
+            // We are searching for the least priorty operator, doing add/subtrace before multiply divide.
+            // Find the first operator (+,-,*,/) that is not inside bracket for the moment
+            int pos = -1;
+            int addSubAt = -1;
+            int multDivAt = -1;
+            int brkts = 0;
 
-            if (pos == -1)
+            for (int n = 0; n < v.Length; n++)
             {
-                pos = Math.Max(v.IndexOf("*"), v.IndexOf("/"));
+                if (v[n] == '(')
+                    brkts++;
+                else if (v[n] == ')')
+                    brkts--;
+                else if ((brkts == 0) && ((v[n] == '+') || (v[n] == '-')))
+                    addSubAt = n;
+                else if ((brkts == 0) && ((v[n] == '*') || (v[n] == '/')))
+                    multDivAt = n;
             }
 
-            if (pos == -1)
-            {
-                if (v == "cx")
-                    return pitch.Width / 2;
-                if (v == "cy")
-                    return pitch.Height / 2;
-                if (v == "w")
-                    return pitch.Width;
-                if (v == "h")
-                    return pitch.Height;
+            if (brkts != 0)
+                throw new Exception("Brackets mismatch : " + v);
 
-                float val;
-                if (!float.TryParse(v, out val))
-                    throw new Exception("Bad value:" + v);
-                return val;
-            }
+            if(addSubAt!=-1)
+                pos = addSubAt;
             else
+                pos = multDivAt;
+
+            if (pos == -1)  // we haven't found an operator, so evaluate a unary value,
+            {
+                if (v.StartsWith("(") && v.EndsWith(")"))
+                    return eval(v.Substring(1, v.Length - 2));
+                else if (v == "cx")
+                    return pitch.Width / 2;
+                else if (v == "cy")
+                    return pitch.Height / 2;
+                else if (v == "x")
+                    return pitch.Width;
+                else if (v == "y")
+                    return pitch.Height;
+                else if (fields.ContainsKey(v))
+                {
+                    return eval(fields[v]);
+                }
+                else
+                {
+                    float val;
+                    if (!float.TryParse(v, out val))
+                        throw new Exception("Bad value : " + v);
+                    return val;
+                }
+            }
+            else // we have found an operator, so evaluate both sides and do the operation
             {
                 string a = v.Substring(0, pos);
                 string b = v.Substring(pos + 1);
                 char op = v[pos];
+
+                if ((a.Trim()=="")||(b.Trim()==""))
+                    throw new Exception("Bad value : " + v);
 
                 if (op == '*')
                     return eval(a) * eval(b);
@@ -344,12 +374,7 @@ namespace a4label
             return 0;
         }
 
-        internal string QRlink()
-        {
-            return fields["[QRlink]"];
-        }
-
-        internal string version()
+          internal string version()
         {
             return fields["[version]"];
         }
@@ -399,12 +424,12 @@ namespace a4label
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.FillRectangle(Brushes.Beige, e.Graphics.ClipBounds);
-            float panelWidthMM = 25.4f*(float)panel1.Width/e.Graphics.DpiX;
+            float panelWidthMM = 25.4f * (float)panel1.Width / e.Graphics.DpiX;
             float scale = panelWidthMM / pitch.Width;
             e.Graphics.ScaleTransform(scale, scale);
 
             e.Graphics.PageUnit = GraphicsUnit.Millimeter;
-     //       e.Graphics.DrawRectangle(Pens.Blue, 0, 0, pitch.Width, pitch.Height);
+            //       e.Graphics.DrawRectangle(Pens.Blue, 0, 0, pitch.Width, pitch.Height);
             drawOn(e.Graphics);
         }
 
@@ -626,13 +651,13 @@ namespace a4label
     }
 
 
-    public class PrintRecord:Object
+    public class PrintRecord : Object
     {
         string date;
         public int start, end;
-        public string version="";
+        public string version = "";
 
-        public PrintRecord(string ln):base()
+        public PrintRecord(string ln) : base()
         {
 
             if (ln.StartsWith("PRINTED:"))
@@ -640,7 +665,7 @@ namespace a4label
             string[] s = ln.Split(' ');
             if (s.Length != 4)
                 throw new Exception("Expected PRINTED:date time nn-nn comment");
-            date = s[0]+" "+s[1];
+            date = s[0] + " " + s[1];
             string[] num = s[2].Split('-');
             int.TryParse(num[0], out start);
             int.TryParse(num[1], out end);
@@ -650,7 +675,7 @@ namespace a4label
                 version = "";
         }
 
-        public PrintRecord(DateTime date, int start, int end, string version):base()
+        public PrintRecord(DateTime date, int start, int end, string version) : base()
         {
             this.date = date.ToShortDateString() + " " + date.ToShortTimeString();
             this.start = start;
