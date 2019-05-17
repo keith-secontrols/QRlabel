@@ -13,7 +13,7 @@ The program keeps a timestamped log of printed labels and warns if the selected 
 ## Launching the program
 The program is a Visual studio C# project, and uses the **zxing** library for barcode generation.
 
-Directly install it from http://innovodesign/QRLabel/publish.htm.
+Directly install it from http://innovodesign.co.uk/QRLabel/publish.htm.
 
 ## Use
 The user selects the first serial number and the number of labels to be printed, then click [Print] 
