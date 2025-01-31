@@ -1,0 +1,19 @@
+// 19mm round labels on A4 sheet
+// Labels-Direct.co.uk SLR19
+topleft:7.64,30.78
+pitch:21.0,41.74
+across:9
+down:6
+
+[version]=V4.03
+
+pen:BLUE,0.5
+circle:cx,y*0.25,9
+circle:cx,y*0.75,9
+line:0,cy,x,cy
+QRcode:cx,y*0.25,14,http://find.secontrols.link/NV2[NNNN]1
+text:cx,y-24,NV2[NNNNN]1
+text:cx,y-38,NV2-1
+
+text:cx,y-4,[version]
+text:cx,y-9,[NNNNN]

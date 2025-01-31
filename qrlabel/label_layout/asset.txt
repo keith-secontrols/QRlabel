@@ -1,0 +1,28 @@
+// Labels-Direct.co.uk SLI189, 
+// label horizontal pitch 27.9mm
+topleft:4.7,10.9
+pitch:27.9,10
+across:6
+down:27
+random_serial:true
+valid_serial_min:10
+valid_serial_max:9223372036854775807
+
+[code]=[XXXX]
+
+pen:GRAY,0.1
+line:0.1,1,0.1,9
+line:25.4,1,25.4,9
+line:27.9,1,27.9,9
+line:27.9+25.4,1,27.9+25.4,9
+line:x-0.1,1,x-0.1,9
+QRcode:20,cy,10.5,http://find.secontrols.link/@[code]
+graphic:7.5,2.5,10,5,logo.bmp 
+font:verdana,12
+
+font:verdana,5.5
+text:8,6.5,Asset Tag
+font:verdana,4
+text:8,8.5,[code]
+PRINTED:30/01/2025 18:16 5785689395167259372-5785689395167259425 ?
+PRINTED:30/01/2025 18:18 6021775987720424414-6021775987720424467 ?
