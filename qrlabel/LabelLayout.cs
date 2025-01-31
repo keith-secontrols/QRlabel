@@ -22,14 +22,15 @@ namespace a4label
         Dictionary<string, string> fields = new Dictionary<string, string>();
         public List<PrintRecord> history = new List<PrintRecord>();
 
-        private int serialNum;
-        private int firstNum, lastNum;
-        public int lastPrintedSerno = -1;
+        private decimal serialNum;
+        private decimal firstNum, lastNum;
+        public decimal lastPrintedSerno = -1;
         public string lastPrintedVersion = "";
         public int repeatAcross = 1;
         public int repeatDown = 1;
-        private int validSerialMin;
-        private int validSerialMax;
+        public decimal validSerialMin = 0;
+        public decimal validSerialMax = (decimal)UInt64.MaxValue;
+        public bool randomSerialNumber = false;
         public List<string> errors = new List<string>();
 
 
@@ -48,6 +49,20 @@ namespace a4label
 
         public string fix(string text, int tries)
         {
+            string[] hexMatch = new string[] { "[X]"
+                , "[XX]"
+                , "[XXX]"
+                , "[XXXX]"
+                , "[XXXXXXX]"
+                , "[XXXXXXXX]"
+                , "[XXXXXXXXX]"
+                , "[XXXXXXXXXX]"
+                , "[XXXXXXXXXXX]"
+                , "[XXXXXXXXXXXX]"
+                , "[XXXXXXXXXXXXX]"
+                , "[XXXXXXXXXXXXXXX]"
+                , "[XXXXXXXXXXXXXXXX]"
+            };
             string old = text;
             if (text.Contains("[NNNNNN]"))
                 text = text.Replace("[NNNNNN]", serialNum.ToString("000000"));
@@ -62,7 +77,11 @@ namespace a4label
             else if (text.Contains("[N]"))
                 text = text.Replace("[N]", serialNum.ToString());
             else if (text.Contains("[MAC12]"))
-                text = text.Replace("[MAC12]", ((serialNum / 256) & 0x0f).ToString("X") + "-" + (serialNum & 255).ToString("X2"));
+                text = text.Replace("[MAC12]", (((uint)serialNum / 256) & 0x0f).ToString("X") + "-" + ((uint)serialNum & 255).ToString("X2"));
+            else foreach (string match in hexMatch)
+                    if (text.Contains(match))
+                        text = fixHex(text, match);
+
 
             foreach (string key in fields.Keys)
             {
@@ -75,6 +94,12 @@ namespace a4label
             return text;
         }
 
+        private string fixHex(string text, string match)
+        {
+            int len = match.Length - 2;
+            string formatter = "X"+len.ToString();
+            return ((UInt64)serialNum).ToString(formatter);
+        }
 
         internal bool canPrint()
         {
@@ -82,7 +107,7 @@ namespace a4label
         }
 
 
-        internal void setRange(int start, int count)
+        internal void setRange(long start, long count)
         {
             if (serialNum != start)
             {
@@ -109,9 +134,9 @@ namespace a4label
             fields.Add("[QRlink]", "?");
             fields.Add("[version]", "?");
             int line = 0;
-            int first = 1;
+            decimal first = 1;
             validSerialMin = 0;
-            validSerialMax = int.MaxValue;
+            validSerialMax = long.MaxValue;
             lastPrintedSerno = -1;
             repeatAcross = 1;
             repeatDown = 1;
@@ -161,11 +186,15 @@ namespace a4label
                     }
                     else if (ln.StartsWith("valid_serial_min:"))
                     {
-                        validSerialMin = int.Parse(ln.Substring(17));
+                        validSerialMin = decimal.Parse(ln.Substring(17));
                     }
                     else if (ln.StartsWith("valid_serial_max:"))
                     {
-                        validSerialMax = int.Parse(ln.Substring(17));
+                        validSerialMax = decimal.Parse(ln.Substring(17));
+                    }
+                    else if (ln.StartsWith("random_serial:"))
+                    {
+                        randomSerialNumber = ln.Contains("true");
                     }
                     else if (ln.StartsWith("clear:"))
                     {
@@ -245,7 +274,7 @@ namespace a4label
 
 
 
-        internal string pageFit()
+        internal string pageFit(bool isRandom)
         {
             string s = "";
             if (labelsPerPage() <= 0)
@@ -253,10 +282,11 @@ namespace a4label
                 return "Define labels per sheet with 'across:N' and 'down:N' ";
             }
 
-            int pages = (lastNum - serialNum) / labelsPerPage() + 1;
-            int wasted = pages * labelsPerPage() - (lastNum - serialNum + 1);
+            decimal pages = (lastNum - serialNum) / labelsPerPage() + 1;
+            decimal wasted = pages * labelsPerPage() - (lastNum - serialNum + 1);
 
-            s += "First:" + firstNum.ToString() + " Last:" + (lastNum.ToString()) + "   ";
+            if(!isRandom)
+                s += "First:" + firstNum.ToString() + " Last:" + (lastNum.ToString()) + "   ";
 
             if (pages == 1)
                 s += "1 page";
@@ -388,7 +418,7 @@ namespace a4label
             canvas.Restore(transState);
         }
 
-        internal void drawPage(int start, int n, Graphics canvas)
+        internal void drawPage(decimal start, int n, Graphics canvas)
         {
 
             serialNum = start;
@@ -654,7 +684,7 @@ namespace a4label
     public class PrintRecord : Object
     {
         string date;
-        public int start, end;
+        public decimal start, end;
         public string version = "";
 
         public PrintRecord(string ln) : base()
@@ -667,15 +697,15 @@ namespace a4label
                 throw new Exception("Expected PRINTED:date time nn-nn comment");
             date = s[0] + " " + s[1];
             string[] num = s[2].Split('-');
-            int.TryParse(num[0], out start);
-            int.TryParse(num[1], out end);
+            decimal.TryParse(num[0], out start);
+            decimal.TryParse(num[1], out end);
             if (s.Length >= 4)
                 version = ln.Substring(s[0].Length + s[1].Length + s[2].Length + 3);
             else
                 version = "";
         }
 
-        public PrintRecord(DateTime date, int start, int end, string version) : base()
+        public PrintRecord(DateTime date, decimal start, decimal end, string version) : base()
         {
             this.date = date.ToShortDateString() + " " + date.ToShortTimeString();
             this.start = start;
@@ -683,7 +713,7 @@ namespace a4label
             this.version = version;
         }
 
-        public bool overlaps(int first, int last)
+        public bool overlaps(decimal first, decimal last)
         {
             return ((first <= end) && (last >= start));
         }

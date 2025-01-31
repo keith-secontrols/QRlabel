@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 using System.IO;
+using System.Runtime.Remoting.Messaging;
 
 namespace a4label
 {
@@ -23,7 +24,7 @@ namespace a4label
             "circle:cx,y*0.25,9\r\n" +
             "circle:cx,y*0.75,9\r\n" +
             "line:0,cy,x,cy\r\n" +
-            "QRcode:cx,y*0.25,14,http://dilbert.com\r\n" +
+            "QRcode:cx,y*0.25,14,https://myurl.com\r\n" +
             "text:cx,y-4,[version]\r\n" +
             "text:cx,y-9,[NNNNN]\r\n";
 
@@ -82,8 +83,8 @@ namespace a4label
 
         private void numericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            labelLayout1.setRange((int)numericUpDown1.Value, (int)numericUpDown2.Value);
-            label1.Text = labelLayout1.pageFit();
+            labelLayout1.setRange((long)numericUpDown1.Value, (long)numericUpDown2.Value);
+            label1.Text = labelLayout1.pageFit(checkBoxRandomSN.Checked);
             if (labelLayout1.canPrint())
             {
                 buttonPrint.Enabled = true;
@@ -121,7 +122,14 @@ namespace a4label
         {
             labelLayout1.readSettings(log.Text);
             setLabelErrors();
-            listBoxHistory.Items.AddRange(labelLayout1.history.ToArray());
+
+            listBoxHistory.Items.Clear();
+            if(!labelLayout1.randomSerialNumber)
+                listBoxHistory.Items.AddRange(labelLayout1.history.ToArray());
+
+            checkBoxRandomSN.Checked = labelLayout1.randomSerialNumber;
+            checkBoxRandomSN_CheckedChanged(null, null);
+            textBoxVersion.Text = labelLayout1.lastPrintedVersion;
         }
 
 
@@ -149,8 +157,7 @@ namespace a4label
             }
 
             ReadSettings();
-            numericUpDown1.Value = labelLayout1.lastPrintedSerno + 1;
-            textBoxVersion.Text = labelLayout1.lastPrintedVersion;
+           
         }
 
 
@@ -265,7 +272,7 @@ namespace a4label
         private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
         {
             pageN++;
-            int start = (int)numericUpDown1.Value;
+            decimal start = numericUpDown1.Value;
 
             int labelsPerPage = labelLayout1.repeatAcross * labelLayout1.repeatDown;
 
@@ -310,6 +317,54 @@ namespace a4label
             aboutBox.BringToFront();
         }
 
+        private void checkBoxRandomSN_CheckedChanged(object sender, EventArgs e)
+        {
+//            numericUpDown1.Maximum = labelLayout1.validSerialMax;
+//            numericUpDown1.Minimum = labelLayout1.validSerialMin;
+            if(checkBoxRandomSN.Checked)
+            {
+                nextRandom();
+                numericUpDown1.Enabled = false;
+            }
+            else
+            {
+                numericUpDown1.Enabled = true;
+                decimal n = labelLayout1.lastPrintedSerno + 1;
+                numericUpDown1.Maximum = Math.Max(labelLayout1.validSerialMax, n);
+                numericUpDown1.Minimum = Math.Min(labelLayout1.validSerialMin, n);
+                numericUpDown1.Value = n;
+            }
+        }
+
+        private decimal makeRandom()
+        {
+            decimal randomLong;
+            Random random = new Random();
+            do
+            {
+                byte[] buffer = new byte[8];
+                random.NextBytes(buffer);
+                randomLong = BitConverter.ToUInt64(buffer, 0);
+            } while (randomLong < 1);
+
+            decimal range = labelLayout1.validSerialMax - labelLayout1.validSerialMin;
+
+            return (randomLong % range) + labelLayout1.validSerialMin;
+        }
+
+        private void labelLayout1_Click(object sender, EventArgs e)
+        {
+            if (checkBoxRandomSN.Checked)
+             nextRandom();
+        }
+
+        private void nextRandom()
+        {
+            decimal n = makeRandom();
+            numericUpDown1.Maximum = n;
+            numericUpDown1.Minimum = n;
+            numericUpDown1.Value = n;
+        }
     }
 
 

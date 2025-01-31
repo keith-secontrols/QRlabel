@@ -60,8 +60,9 @@ namespace a4label
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listBoxHistory = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.labelLayout1 = new a4label.LabelLayout();
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
+            this.checkBoxRandomSN = new System.Windows.Forms.CheckBox();
+            this.labelLayout1 = new a4label.LabelLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -96,7 +97,7 @@ namespace a4label
             // numericUpDown1
             // 
             this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown1.Location = new System.Drawing.Point(170, 30);
+            this.numericUpDown1.Location = new System.Drawing.Point(132, 19);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             40000,
@@ -104,7 +105,7 @@ namespace a4label
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(88, 34);
+            this.numericUpDown1.Size = new System.Drawing.Size(155, 28);
             this.numericUpDown1.TabIndex = 1;
             this.numericUpDown1.Value = new decimal(new int[] {
             1,
@@ -116,7 +117,7 @@ namespace a4label
             // numericUpDown2
             // 
             this.numericUpDown2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown2.Location = new System.Drawing.Point(170, 71);
+            this.numericUpDown2.Location = new System.Drawing.Point(170, 82);
             this.numericUpDown2.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             10000,
@@ -129,7 +130,7 @@ namespace a4label
             0,
             0});
             this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(88, 34);
+            this.numericUpDown2.Size = new System.Drawing.Size(117, 28);
             this.numericUpDown2.TabIndex = 3;
             this.numericUpDown2.Value = new decimal(new int[] {
             54,
@@ -144,7 +145,7 @@ namespace a4label
             this.label1.Location = new System.Drawing.Point(14, 157);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 24);
+            this.label1.Size = new System.Drawing.Size(46, 18);
             this.label1.TabIndex = 4;
             this.label1.Text = "label1";
             // 
@@ -154,27 +155,27 @@ namespace a4label
             this.label2.Location = new System.Drawing.Point(22, 37);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(131, 24);
+            this.label2.Size = new System.Drawing.Size(102, 18);
             this.label2.TabIndex = 5;
             this.label2.Text = "Serial Number";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(27, 78);
+            this.label3.Location = new System.Drawing.Point(27, 89);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(126, 24);
+            this.label3.Size = new System.Drawing.Size(100, 18);
             this.label3.TabIndex = 6;
             this.label3.Text = "Labels to print";
             // 
             // textBoxVersion
             // 
             this.textBoxVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxVersion.Location = new System.Drawing.Point(170, 113);
+            this.textBoxVersion.Location = new System.Drawing.Point(199, 114);
             this.textBoxVersion.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxVersion.Name = "textBoxVersion";
-            this.textBoxVersion.Size = new System.Drawing.Size(88, 34);
+            this.textBoxVersion.Size = new System.Drawing.Size(88, 28);
             this.textBoxVersion.TabIndex = 9;
             this.textBoxVersion.Text = "1.00";
             this.textBoxVersion.TextChanged += new System.EventHandler(this.TextBoxVersion_TextChanged);
@@ -182,10 +183,10 @@ namespace a4label
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(78, 121);
+            this.label5.Location = new System.Drawing.Point(66, 121);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(75, 24);
+            this.label5.Size = new System.Drawing.Size(58, 18);
             this.label5.TabIndex = 10;
             this.label5.Text = "Version";
             // 
@@ -201,7 +202,7 @@ namespace a4label
             this.log.Name = "log";
             this.log.ReadOnly = true;
             this.log.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.log.Size = new System.Drawing.Size(735, 614);
+            this.log.Size = new System.Drawing.Size(735, 617);
             this.log.TabIndex = 11;
             this.log.TextChanged += new System.EventHandler(this.log_TextChanged);
             // 
@@ -214,7 +215,7 @@ namespace a4label
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1495, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1495, 25);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -226,41 +227,41 @@ namespace a4label
             this.printToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(37, 19);
             this.openToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem1
             // 
             this.openToolStripMenuItem1.Name = "openToolStripMenuItem1";
-            this.openToolStripMenuItem1.Size = new System.Drawing.Size(120, 26);
+            this.openToolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
             this.openToolStripMenuItem1.Text = "Open";
             this.openToolStripMenuItem1.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // printToolStripMenuItem
             // 
             this.printToolStripMenuItem.Name = "printToolStripMenuItem";
-            this.printToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
+            this.printToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.printToolStripMenuItem.Text = "Print";
             this.printToolStripMenuItem.Click += new System.EventHandler(this.PrintToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 19);
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.HelpToolStripMenuItem_Click);
             // 
@@ -297,7 +298,7 @@ namespace a4label
             this.labelErrors.Location = new System.Drawing.Point(20, 17);
             this.labelErrors.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelErrors.Name = "labelErrors";
-            this.labelErrors.Size = new System.Drawing.Size(105, 25);
+            this.labelErrors.Size = new System.Drawing.Size(85, 20);
             this.labelErrors.TabIndex = 17;
             this.labelErrors.Text = "labelErrors";
             // 
@@ -307,7 +308,7 @@ namespace a4label
             this.checkBoxUnlock.Location = new System.Drawing.Point(133, 30);
             this.checkBoxUnlock.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.checkBoxUnlock.Name = "checkBoxUnlock";
-            this.checkBoxUnlock.Size = new System.Drawing.Size(90, 28);
+            this.checkBoxUnlock.Size = new System.Drawing.Size(74, 22);
             this.checkBoxUnlock.TabIndex = 19;
             this.checkBoxUnlock.Text = "Unlock";
             this.checkBoxUnlock.UseVisualStyleBackColor = true;
@@ -351,10 +352,10 @@ namespace a4label
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.listBoxHistory);
-            this.tabPage1.Location = new System.Drawing.Point(4, 31);
+            this.tabPage1.Location = new System.Drawing.Point(4, 26);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(746, 673);
+            this.tabPage1.Size = new System.Drawing.Size(746, 678);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "History";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -363,10 +364,10 @@ namespace a4label
             // 
             this.listBoxHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxHistory.FormattingEnabled = true;
-            this.listBoxHistory.ItemHeight = 22;
+            this.listBoxHistory.ItemHeight = 17;
             this.listBoxHistory.Location = new System.Drawing.Point(3, 3);
             this.listBoxHistory.Name = "listBoxHistory";
-            this.listBoxHistory.Size = new System.Drawing.Size(740, 667);
+            this.listBoxHistory.Size = new System.Drawing.Size(740, 672);
             this.listBoxHistory.TabIndex = 0;
             // 
             // tabPage2
@@ -374,13 +375,28 @@ namespace a4label
             this.tabPage2.Controls.Add(this.checkBoxUnlock);
             this.tabPage2.Controls.Add(this.log);
             this.tabPage2.Controls.Add(this.buttonSave);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 26);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(746, 679);
+            this.tabPage2.Size = new System.Drawing.Size(746, 678);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Layout";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // printDialog1
+            // 
+            this.printDialog1.UseEXDialog = true;
+            // 
+            // checkBoxRandomSN
+            // 
+            this.checkBoxRandomSN.AutoSize = true;
+            this.checkBoxRandomSN.Location = new System.Drawing.Point(142, 53);
+            this.checkBoxRandomSN.Name = "checkBoxRandomSN";
+            this.checkBoxRandomSN.Size = new System.Drawing.Size(125, 22);
+            this.checkBoxRandomSN.TabIndex = 21;
+            this.checkBoxRandomSN.Text = "Random Serial";
+            this.checkBoxRandomSN.UseVisualStyleBackColor = true;
+            this.checkBoxRandomSN.CheckedChanged += new System.EventHandler(this.checkBoxRandomSN_CheckedChanged);
             // 
             // labelLayout1
             // 
@@ -391,16 +407,14 @@ namespace a4label
             this.labelLayout1.Name = "labelLayout1";
             this.labelLayout1.Size = new System.Drawing.Size(736, 708);
             this.labelLayout1.TabIndex = 18;
-            // 
-            // printDialog1
-            // 
-            this.printDialog1.UseEXDialog = true;
+            this.labelLayout1.Click += new System.EventHandler(this.labelLayout1_Click);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1495, 920);
+            this.Controls.Add(this.checkBoxRandomSN);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.label5);
@@ -468,6 +482,7 @@ namespace a4label
         private System.Windows.Forms.ListBox listBoxHistory;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.CheckBox checkBoxRandomSN;
     }
 }
 
