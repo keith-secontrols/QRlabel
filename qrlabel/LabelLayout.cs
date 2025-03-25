@@ -53,6 +53,8 @@ namespace a4label
                 , "[XX]"
                 , "[XXX]"
                 , "[XXXX]"
+                , "[XXXXX]"
+                , "[XXXXXX]"
                 , "[XXXXXXX]"
                 , "[XXXXXXXX]"
                 , "[XXXXXXXXX]"
@@ -60,6 +62,7 @@ namespace a4label
                 , "[XXXXXXXXXXX]"
                 , "[XXXXXXXXXXXX]"
                 , "[XXXXXXXXXXXXX]"
+                , "[XXXXXXXXXXXXXX]"
                 , "[XXXXXXXXXXXXXXX]"
                 , "[XXXXXXXXXXXXXXXX]"
             };
@@ -98,7 +101,9 @@ namespace a4label
         {
             int len = match.Length - 2;
             string formatter = "X"+len.ToString();
-            return ((UInt64)serialNum).ToString(formatter);
+            string s = ((UInt64)serialNum).ToString("X");
+            s = s.Substring(s.Length - len);
+            return text.Replace(match,s);
         }
 
         internal bool canPrint()
@@ -161,7 +166,7 @@ namespace a4label
                             fields[name] = value;
                         else
                             fields.Add(name, value);
-
+                        //labelItems.Add(new Setter(this, name, value));
                         if (name == "[version]")
                             lastPrintedVersion = value;
 
@@ -410,6 +415,24 @@ namespace a4label
         }
 
 
+        private decimal makeRandom()
+        {
+            decimal randomLong;
+            Random random = new Random();
+            do
+            {
+                byte[] buffer = new byte[8];
+                random.NextBytes(buffer);
+                randomLong = BitConverter.ToUInt64(buffer, 0);
+            } while (randomLong < 1);
+
+            decimal range = validSerialMax - validSerialMin;
+
+            return (randomLong % range) + validSerialMin;
+        }
+
+
+
         internal void drawOn(Graphics canvas)
         {
             System.Drawing.Drawing2D.GraphicsState transState = canvas.Save();
@@ -428,7 +451,10 @@ namespace a4label
             for (int nn = 0; nn < n; nn++)
             {
                 drawOn(canvas);
-                serialNum++;
+                if (randomSerialNumber)
+                    serialNum = makeRandom();
+                else
+                    serialNum++;
                 canvas.TranslateTransform(pitch.Width, 0);
                 if (((nn + 1) % repeatAcross) == 0)
                     canvas.TranslateTransform(-pitch.Width * repeatAcross, pitch.Height);
