@@ -1,0 +1,27 @@
+// Label Template for Widget label
+// 19mm round labels on A4 sheet
+// Labels-Direct.co.uk SLR19
+
+topleft:6,13.8
+pitch:21.0,21
+across:9
+down:13
+
+random_serial:true
+valid_serial_min:10
+valid_serial_max:9223372036854775807
+
+[code]=11[XXXXXXXXXXXXXX]
+
+offset:cx,cy*0.5
+pen:GRAY,0.1
+circle:0,0,9.5
+
+pen:GRAY,0.1
+QRcode:0,0,14,http://find.secontrols.link/~[code]
+font:verdana,2.9
+text:0,7.5,[code]
+PRINTED:02/06/2025 12:58 6964506759595034611-6964506759595034664 ?
+PRINTED:02/06/2025 12:59 715324407706089094-715324407706089210 ?
+PRINTED:02/06/2025 13:03 3720508192321512142-3720508192321512258 ?
+PRINTED:02/06/2025 13:06 8056022118278386804-8056022118278386920 ?
