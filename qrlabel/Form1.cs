@@ -23,20 +23,20 @@ namespace a4label
 
         // Default label layout script (used if no file is loaded)
         const string defaultScript =
-            "// 19mm round labels on A4 sheet\r\n" +
-            "// Labels-Direct.co.uk SLR19\r\n" +
-            "topleft:7.64,30.78\r\n" + // Top-left position of the label grid
-            "pitch:21.0,41.74\r\n" + // Distance between labels (mm)
-            "across:9\r\n" + // Number of labels horizontally
-            "down:6\r\n\r\n" + // Number of labels vertically
-            "[version]=V1.00\r\n\r\n" + // Version info
-            "pen:BLUE,0.5\r\n" + // Pen color and thickness
-            "circle:cx,y*0.25,9\r\n" + // Draw circle at calculated position
-            "circle:cx,y*0.75,9\r\n" +
-            "line:0,cy,x,cy\r\n" + // Draw line
-            "QRcode:cx,y*0.25,14,https://myurl.com\r\n" + // Draw QR code
-            "text:cx,y-4,[version]\r\n" + // Draw version text
-            "text:cx,y-9,[NNNNN]\r\n"; // Draw serial number
+    "// 19mm round labels on A4 sheet\r\n" +
+    "// Labels-Direct.co.uk SLR19\r\n" +
+    "topleft:7.64,30.78\r\n" + // Top-left position of the label grid
+    "pitch:21.0,41.74\r\n" + // Distance between labels (mm)
+    "across:9\r\n" + // Number of labels horizontally
+    "down:6\r\n\r\n" + // Number of labels vertically
+    "[version]=V1.00\r\n\r\n" + // Version info
+    "pen:BLUE,0.5\r\n" + // Pen color and thickness
+                         // "circle:cx,y*0.25,9\r\n" + // Draw circle at calculated position (REMOVED)
+                         // "circle:cx,y*0.75,9\r\n" + // Draw circle at calculated position (REMOVED)
+    "line:0,cy,x,cy\r\n" + // Draw line
+    "QRcode:cx,y*0.25,14,https://myurl.com\r\n" + // Draw QR code
+    "text:cx,y-4,[version]\r\n" + // Draw version text
+    "text:cx,y-10,[NNNNN]\r\n"; // Draw serial number (moved 1mm up)
 
         // Stores unique random serial numbers for random mode
         private List<decimal> randomSerials = new List<decimal>();
@@ -111,6 +111,11 @@ namespace a4label
                 }
             }
             printDocument1.PrinterSettings.PrinterName = printer;
+
+            // Ensure printDocument1 uses A4 page size
+            printDocument1.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169); // 827x1169 hundredths of an inch = 210x297mm
+            printDocument1.DefaultPageSettings.Landscape = false; // Set to true if you want landscape
+
             SetTitle(); // Update window title
         }
 
@@ -284,7 +289,16 @@ namespace a4label
         // Handles Print button click
         private void buttonPrint_Click(object sender, EventArgs e)
         {
-            printDocument1.Print();
+            DialogResult dr = printDialog1.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                printDocument1.PrinterSettings.PrinterName = printDialog1.PrinterSettings.PrinterName;
+                printDocument1.PrinterSettings.Copies = printDialog1.PrinterSettings.Copies;
+                Properties.Settings.Default.printer = printDialog1.PrinterSettings.PrinterName;
+                Properties.Settings.Default.Save();
+                SetTitle();
+                printDocument1.Print();
+            }
         }
 
         // Handles page settings query (not used here)
@@ -333,17 +347,20 @@ namespace a4label
                 e.HasMorePages = true;
             }
 
+            // Do NOT translate for margins; use raw coordinates
+            var g = e.Graphics;
+            // g.TranslateTransform(e.MarginBounds.Left, e.MarginBounds.Top); // <-- Remove this line
+
             // Print random or sequential serials
             if (checkBoxRandomSN.Checked)
             {
-                // Get serials for this page
                 var pageSerials = randomSerials.Skip(randomSerialIndex).Take(n).ToList();
-                labelLayout1.drawPage(pageSerials, e.Graphics);
+                labelLayout1.drawPage(pageSerials, g);
                 randomSerialIndex += pageSerials.Count;
             }
             else
             {
-                labelLayout1.drawPage(start, n, e.Graphics);
+                labelLayout1.drawPage(start, n, g);
             }
         }
 
