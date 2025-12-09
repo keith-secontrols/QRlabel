@@ -28,7 +28,7 @@ namespace a4label
     "topleft:7.64,30.78\r\n" + // Top-left position of the label grid
     "pitch:21.0,41.74\r\n" + // Distance between labels (mm)
     "across:9\r\n" + // Number of labels horizontally
-    "down:6\r\n\r\n" + // Number of labels vertically
+    "down:13\r\n\r\n" + // Number of labels vertically
     "[version]=V1.00\r\n\r\n" + // Version info
     "pen:BLUE,0.5\r\n" + // Pen color and thickness
                          // "circle:cx,y*0.25,9\r\n" + // Draw circle at calculated position (REMOVED)
@@ -117,6 +117,9 @@ namespace a4label
             printDocument1.DefaultPageSettings.Landscape = false; // Set to true if you want landscape
 
             SetTitle(); // Update window title
+            
+            // Set default number of labels to print to 117
+            numericUpDown2.Value = 117;
         }
 
         // Handles changes to serial number range controls
