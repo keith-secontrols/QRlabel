@@ -83,8 +83,14 @@ namespace a4label
             // "Print Preview" menu item
             this.printPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 
+            // "Change Printer" menu item
+            this.changePrinterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+
             // "Exit" menu item
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+
+            // "Change Printer" menu item
+            this.changePrinterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 
             // "Help" menu
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -275,6 +281,7 @@ namespace a4label
             this.openToolStripMenuItem1,
             this.saveToolStripMenuItem,
             this.printToolStripMenuItem,
+            this.changePrinterToolStripMenuItem,
             this.printPreviewToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
@@ -298,6 +305,12 @@ namespace a4label
             this.printToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.printToolStripMenuItem.Text = "Print";
             this.printToolStripMenuItem.Click += new System.EventHandler(this.PrintToolStripMenuItem_Click);
+
+            // changePrinterToolStripMenuItem: "Change Printer" menu item
+            this.changePrinterToolStripMenuItem.Name = "changePrinterToolStripMenuItem";
+            this.changePrinterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.changePrinterToolStripMenuItem.Text = "Change Printer...";
+            this.changePrinterToolStripMenuItem.Click += new System.EventHandler(this.changePrinterToolStripMenuItem_Click);
 
             // printPreviewToolStripMenuItem: "Print Preview" menu item
             this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
@@ -445,10 +458,14 @@ namespace a4label
             this.labelLayout1.Click += new System.EventHandler(this.labelLayout1_Click);
 
             // buttonPreview: Button for print preview
-            this.buttonPreview.Location = new System.Drawing.Point(295, 170); // Set appropriate location
+            this.buttonPreview.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonPreview.Location = new System.Drawing.Point(295, 161);
+            this.buttonPreview.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPreview.Name = "buttonPreview";
-            this.buttonPreview.Size = new System.Drawing.Size(75, 23);
+            this.buttonPreview.Size = new System.Drawing.Size(1187, 34);
             this.buttonPreview.Text = "Preview...";
+            this.buttonPreview.UseVisualStyleBackColor = true;
             this.buttonPreview.Click += new System.EventHandler(this.buttonPreview_Click);
 
             // --- Form property settings ---
@@ -526,6 +543,7 @@ namespace a4label
         private System.Windows.Forms.ListBox listBoxHistory;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changePrinterToolStripMenuItem;
         private System.Windows.Forms.CheckBox checkBoxRandomSN;
         private System.Windows.Forms.Button buttonPreview;
     }
