@@ -65,6 +65,8 @@ namespace a4label
         // Handles form load event: sets up working directory, loads layout, and printer
         private void Form1_Load(object sender, EventArgs e)
         {
+
+            AppSettings.Load();
             // Get path to user's Documents\label_layout
             string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\label_layout";
             if (!Directory.Exists(path))
@@ -76,19 +78,22 @@ namespace a4label
             saveFileDialog1.InitialDirectory = path;
 
             // Try to load last used layout file
-            string fn = Properties.Settings.Default.filename;
+            string fn = AppSettings.Filename;
+
             if (File.Exists(fn))
             {
-                loadLog(fn); // Load file
+                loadLog(fn);
             }
-            else if (MessageBox.Show("Cannot load file " + fn + "\nUsing default layout", "Problem") == DialogResult.OK)
+            else
             {
-                log.Text = defaultScript; // Use default if missing
+                if (!string.IsNullOrEmpty(fn))
+                    MessageBox.Show("Cannot load file " + fn + "\nUsing default layout", "Problem");
+                log.Text = defaultScript;
                 ReadSettings();
             }
 
             // Set up printer
-            string printer = Properties.Settings.Default.printer;
+            string printer = AppSettings.Printer;
             bool foundPrinter = false;
             foreach (string p in PrinterSettings.InstalledPrinters)
                 foundPrinter |= (printer == p);
@@ -104,8 +109,8 @@ namespace a4label
                 {
                     PrinterSettings settings = new PrinterSettings();
                     printer = settings.PrinterName;
-                    Properties.Settings.Default.printer = printer;
-                    Properties.Settings.Default.Save();
+                    AppSettings.Printer = printer;
+                    AppSettings.Save();
 
                     MessageBox.Show("Using printer" + printer);
                 }
@@ -152,8 +157,8 @@ namespace a4label
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                Properties.Settings.Default.filename = openFileDialog1.FileName;
-                Properties.Settings.Default.Save();
+                AppSettings.Filename = openFileDialog1.FileName;
+                AppSettings.Save();
                 loadLog(openFileDialog1.FileName);
                 SetTitle();
             }
@@ -162,7 +167,7 @@ namespace a4label
         // Updates the window title with current file and printer
         private void SetTitle()
         {
-            this.Text = Properties.Settings.Default.filename + "  :  " + Properties.Settings.Default.printer;
+            this.Text = AppSettings.Filename + "  :  " + AppSettings.Printer;
         }
 
         // Reads settings from the layout script and updates UI
@@ -217,24 +222,24 @@ namespace a4label
         {
             try
             {
-                StreamWriter sw = new StreamWriter(Properties.Settings.Default.filename);
+                StreamWriter sw = new StreamWriter(AppSettings.Filename);
                 sw.Write(log.Text);
                 sw.Close();
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, Properties.Settings.Default.filename);
+                MessageBox.Show(e.Message, AppSettings.Filename);
             }
         }
 
         // Handles Save menu item click
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveFileDialog1.FileName = Properties.Settings.Default.filename;
+            saveFileDialog1.FileName = AppSettings.Filename;
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                Properties.Settings.Default.filename = saveFileDialog1.FileName;
-                Properties.Settings.Default.Save();
+                AppSettings.Filename = saveFileDialog1.FileName;
+                AppSettings.Save();
                 Save();
             }
         }
@@ -275,6 +280,19 @@ namespace a4label
             log.ReadOnly = !checkBoxUnlock.Checked;
         }
 
+        // Handles Change Printer menu item click
+        private void changePrinterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (printDialog1.ShowDialog() == DialogResult.OK)
+            {
+                printDocument1.PrinterSettings.PrinterName = printDialog1.PrinterSettings.PrinterName;
+                AppSettings.Printer = printDialog1.PrinterSettings.PrinterName;
+                AppSettings.Save();
+                SetTitle();
+                MessageBox.Show("Printer changed to: " + AppSettings.Printer, "Printer", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
         // Handles printer selection from menu
         private void PrintToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -283,8 +301,8 @@ namespace a4label
             {
                 printDocument1.PrinterSettings.PrinterName = printDialog1.PrinterSettings.PrinterName;
                 printDocument1.PrinterSettings.Copies = printDialog1.PrinterSettings.Copies;
-                Properties.Settings.Default.printer = printDialog1.PrinterSettings.PrinterName;
-                Properties.Settings.Default.Save();
+                AppSettings.Printer = printDialog1.PrinterSettings.PrinterName;
+                AppSettings.Save();
                 SetTitle();
             }
         }
@@ -297,8 +315,8 @@ namespace a4label
             {
                 printDocument1.PrinterSettings.PrinterName = printDialog1.PrinterSettings.PrinterName;
                 printDocument1.PrinterSettings.Copies = printDialog1.PrinterSettings.Copies;
-                Properties.Settings.Default.printer = printDialog1.PrinterSettings.PrinterName;
-                Properties.Settings.Default.Save();
+                AppSettings.Printer = printDialog1.PrinterSettings.PrinterName;
+                AppSettings.Save();
                 SetTitle();
                 printDocument1.Print();
             }

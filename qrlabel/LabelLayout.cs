@@ -802,7 +802,7 @@ namespace a4label
         // Creates a print record from parameters
         public PrintRecord(DateTime date, decimal start, decimal end, string version) : base()
         {
-            this.date = date.ToShortDateString() + " " + date.ToShortTimeString();
+            this.date = date.ToString("dd/MM/yyyy HH:mm"); // Fixed format, no AM/PM
             this.start = start;
             this.end = end;
             this.version = version;
