@@ -38,6 +38,9 @@ namespace a4label
     "text:cx,y-4,[version]\r\n" + // Draw version text
     "text:cx,y-10,[NNNNN]\r\n"; // Draw serial number (moved 1mm up)
 
+        // Single Random instance seeded once at startup
+        private readonly Random rng = new Random();
+
         // Stores unique random serial numbers for random mode
         private List<decimal> randomSerials = new List<decimal>();
 
@@ -433,17 +436,10 @@ namespace a4label
         // Generates a random serial number within valid range
         private decimal makeRandom()
         {
-            decimal randomLong;
-            Random random = new Random();
-            do
-            {
-                byte[] buffer = new byte[8];
-                random.NextBytes(buffer);
-                randomLong = BitConverter.ToUInt64(buffer, 0);
-            } while (randomLong < 1);
-
+            byte[] buffer = new byte[8];
+            rng.NextBytes(buffer);
+            ulong randomLong = BitConverter.ToUInt64(buffer, 0);
             decimal range = labelLayout1.validSerialMax - labelLayout1.validSerialMin;
-
             return (randomLong % range) + labelLayout1.validSerialMin;
         }
 
@@ -468,28 +464,17 @@ namespace a4label
         {
             randomSerials.Clear();
             randomSerialIndex = 0;
-            HashSet<decimal> used = new HashSet<decimal>();
             decimal min = labelLayout1.validSerialMin;
             decimal max = labelLayout1.validSerialMax;
-            Random rng = new Random();
+            decimal range = max - min + 1;
 
-            int tries = 0;
-            while (randomSerials.Count < count && tries < count * 10)
+            while (randomSerials.Count < count)
             {
-                decimal range = max - min + 1;
                 byte[] buffer = new byte[8];
                 rng.NextBytes(buffer);
                 decimal candidate = (decimal)(BitConverter.ToUInt64(buffer, 0) % (ulong)range) + min;
-                if (!used.Contains(candidate))
-                {
-                    used.Add(candidate);
-                    randomSerials.Add(candidate);
-                }
-                tries++;
+                randomSerials.Add(candidate);
             }
-
-            if (randomSerials.Count < count)
-                MessageBox.Show("Could not generate enough unique random serial numbers in the given range.");
         }
 
         // Handles Print Preview menu item click
