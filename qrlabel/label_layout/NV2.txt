@@ -13,7 +13,7 @@ line:25.4,1,25.4,9
 line:27.9,1,27.9,9
 line:27.9+25.4,1,27.9+25.4,9
 line:x-0.1,1,x-0.1,9
-QRcode:20,cy,10.5,http://find.secontrols.link/NV2[NNNN]-1
+QRcode:20,cy,10.5,https://find.secontrols.link/NV2[NNNNN]-1
 font:verdana,12
 text:8,3,NV2-1
 font:verdana,5.5
@@ -21,7 +21,7 @@ text:8,6.5,NV2[NNNNN]-1
 text:8,8.5,[version]
 
 offset:cx,0
-QRcode:20,cy,10.5,http://find.secontrols.link/NV2[NNNN]-2
+QRcode:20,cy,10.5,https://find.secontrols.link/NV2[NNNNN]-2
 font:verdana,12
 text:8,3,NV2-2
 font:verdana,5.5

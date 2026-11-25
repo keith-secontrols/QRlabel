@@ -10,7 +10,7 @@ down:27
 pen:GRAY,0.1
 line:0.1,1,0.1,9
 line:25.4,1,25.4,9
-QRcode:20,cy,10.5,https://find.secontrols.link/NV4[NNNN]-1
+QRcode:20,cy,10.5,https://find.secontrols.link/NV4[NNNNN]-1
 font:verdana,12
 text:8,3,NV4-1
 font:verdana,5.5
@@ -20,7 +20,7 @@ text:8,8.5,[version]
 offset:x*0.25,0
 line:0.1,1,0.1,9
 line:25.4,1,25.4,9
-QRcode:20,cy,10.5,https://find.secontrols.link/NV4[NNNN]-2
+QRcode:20,cy,10.5,https://find.secontrols.link/NV4[NNNNN]-2
 font:verdana,12
 text:8,3,NV4-2
 font:verdana,5.5
@@ -31,7 +31,7 @@ text:8,8.5,[version]
 offset:x*0.25,0
 line:0.1,1,0.1,9
 line:25.4,1,25.4,9
-QRcode:20,cy,10.5,https://find.secontrols.link/NV4[NNNN]-3
+QRcode:20,cy,10.5,https://find.secontrols.link/NV4[NNNNN]-3
 font:verdana,12
 text:8,3,NV4-3
 font:verdana,5.5
@@ -42,7 +42,7 @@ text:8,8.5,[version]
 offset:x*0.25,0
 line:0.1,1,0.1,9
 line:25.4,1,25.4,9
-QRcode:20,cy,10.5,https://find.secontrols.link/NV4[NNNN]-4
+QRcode:20,cy,10.5,https://find.secontrols.link/NV4[NNNNN]-4
 font:verdana,12
 text:8,3,NV4-4
 font:verdana,5.5
