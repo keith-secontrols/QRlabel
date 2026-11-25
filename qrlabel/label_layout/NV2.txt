@@ -1,6 +1,6 @@
 // Labels-Direct.co.uk SLI189, 
 // label horizontal pitch 27.9mm
-topleft:4.7,10.2
+topleft:4.7,10.9
 pitch:55.8,10
 across:3
 down:27
