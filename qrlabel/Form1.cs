@@ -113,7 +113,7 @@ namespace a4label
                     PrinterSettings settings = new PrinterSettings();
                     printer = settings.PrinterName;
                     AppSettings.Printer = printer;
-                    AppSettings.Save();
+                    SaveAppSettings();
 
                     MessageBox.Show("Using printer" + printer);
                 }
@@ -161,10 +161,26 @@ namespace a4label
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 AppSettings.Filename = openFileDialog1.FileName;
-                AppSettings.Save();
+                SaveAppSettings();
                 loadLog(openFileDialog1.FileName);
                 SetTitle();
             }
+        }
+
+        // True once the user has been told that the settings could not be saved
+        private bool settingsSaveWarned = false;
+
+        // Saves the application settings. A failure (typically: the settings file belongs
+        // to another Windows user) is reported once per session and otherwise ignored, so
+        // it never blocks opening a layout or printing.
+        private void SaveAppSettings()
+        {
+            if (AppSettings.Save() || settingsSaveWarned)
+                return;
+            settingsSaveWarned = true;
+            MessageBox.Show("Could not save settings to " + AppSettings.SettingsPath + "\n" +
+                AppSettings.LastError + "\n\nThe printer and layout file choice will not be remembered.",
+                "Settings", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         // Updates the window title with current file and printer
@@ -242,7 +258,7 @@ namespace a4label
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 AppSettings.Filename = saveFileDialog1.FileName;
-                AppSettings.Save();
+                SaveAppSettings();
                 Save();
             }
         }
@@ -290,7 +306,7 @@ namespace a4label
             {
                 printDocument1.PrinterSettings.PrinterName = printDialog1.PrinterSettings.PrinterName;
                 AppSettings.Printer = printDialog1.PrinterSettings.PrinterName;
-                AppSettings.Save();
+                SaveAppSettings();
                 SetTitle();
                 MessageBox.Show("Printer changed to: " + AppSettings.Printer, "Printer", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -305,7 +321,7 @@ namespace a4label
                 printDocument1.PrinterSettings.PrinterName = printDialog1.PrinterSettings.PrinterName;
                 printDocument1.PrinterSettings.Copies = printDialog1.PrinterSettings.Copies;
                 AppSettings.Printer = printDialog1.PrinterSettings.PrinterName;
-                AppSettings.Save();
+                SaveAppSettings();
                 SetTitle();
             }
         }
@@ -319,7 +335,7 @@ namespace a4label
                 printDocument1.PrinterSettings.PrinterName = printDialog1.PrinterSettings.PrinterName;
                 printDocument1.PrinterSettings.Copies = printDialog1.PrinterSettings.Copies;
                 AppSettings.Printer = printDialog1.PrinterSettings.PrinterName;
-                AppSettings.Save();
+                SaveAppSettings();
                 SetTitle();
                 printDocument1.Print();
             }

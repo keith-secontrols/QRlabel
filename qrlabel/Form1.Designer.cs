@@ -89,9 +89,6 @@ namespace a4label
             // "Exit" menu item
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 
-            // "Change Printer" menu item
-            this.changePrinterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-
             // "Help" menu
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 

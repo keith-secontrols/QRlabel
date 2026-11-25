@@ -8,13 +8,16 @@ namespace a4label
     /// </summary>
     internal static class AppSettings
     {
-        private static readonly string SettingsPath = Path.Combine(
+        public static readonly string SettingsPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
             "QRlabel",
             "settings.ini");
 
         public static string Filename { get; set; } = string.Empty;
         public static string Printer { get; set; } = string.Empty;
+
+        /// <summary>Reason the last Save failed, or empty if it succeeded.</summary>
+        public static string LastError { get; private set; } = string.Empty;
 
         /// <summary>Loads settings from the INI file. Missing keys keep their default values.</summary>
         public static void Load()
@@ -38,18 +41,33 @@ namespace a4label
             }
         }
 
-        /// <summary>Saves current settings to the INI file.</summary>
-        public static void Save()
+        /// <summary>
+        /// Saves current settings to the INI file. Returns false, with the reason in
+        /// LastError, if the file cannot be written. The usual cause is that it was created
+        /// by another Windows user: by default a file under %PROGRAMDATA% can be read by
+        /// every user but changed only by the user who created it.
+        /// </summary>
+        public static bool Save()
         {
-            string dir = Path.GetDirectoryName(SettingsPath);
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-
-            File.WriteAllLines(SettingsPath, new[]
+            try
             {
-                "filename=" + Filename,
-                "printer="  + Printer
-            });
+                string dir = Path.GetDirectoryName(SettingsPath);
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+
+                File.WriteAllLines(SettingsPath, new[]
+                {
+                    "filename=" + Filename,
+                    "printer="  + Printer
+                });
+                LastError = string.Empty;
+                return true;
+            }
+            catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
+            {
+                LastError = e.Message;
+                return false;
+            }
         }
     }
 }
