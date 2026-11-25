@@ -316,7 +316,7 @@ namespace a4label
                 return "Define labels per sheet with 'across:N' and 'down:N' ";
             }
 
-            decimal pages = (lastNum - serialNum) / labelsPerPage() + 1;
+            decimal pages = decimal.Floor((lastNum - serialNum) / labelsPerPage()) + 1; // whole pages
             decimal wasted = pages * labelsPerPage() - (lastNum - serialNum + 1);
 
             if (!isRandom)
