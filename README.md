@@ -20,6 +20,8 @@ The user selects the first serial number and the number of labels to be printed,
 
 [Preview...] (or File > Print Preview) shows the pages without printing. File > Change Printer selects the printer without printing.
 
+The program opens the layout file that was last used. To open a particular one, for example from a desktop shortcut, give its name on the command line: `QRLabel.exe MyLabel.txt`. A name without a folder is looked for in the `label_layout` folder in Documents.
+
 When the layout asks for random serial numbers (see below) the *Random Serial* box is ticked and the serial number cannot be typed in.
 
 The last layout file and printer are remembered in `%ProgramData%\QRlabel\settings.ini`. The file is shared by all Windows users of the PC, but Windows only lets the user who first ran the program change it. Other users can still open layouts and print; they are warned once that their choice will not be remembered.

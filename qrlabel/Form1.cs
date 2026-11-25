@@ -55,11 +55,19 @@ namespace a4label
             UseAntiAlias = true
         };
 
+        // Layout file named on the command line, or null to open the last one used
+        private readonly string startupFile;
+
+        public Form1() : this(null)
+        {
+        }
+
         // Constructor: initializes the form and about box
-        public Form1()
+        public Form1(string startupFile)
         {
             InitializeComponent(); // Sets up UI components
             aboutBox = new AboutBox1(); // Creates About dialog instance
+            this.startupFile = startupFile;
         }
 
         // Handles form load event: sets up working directory, loads layout, and printer
@@ -77,7 +85,22 @@ namespace a4label
             openFileDialog1.InitialDirectory = path;
             saveFileDialog1.InitialDirectory = path;
 
-            // Try to load last used layout file
+            // A layout file named on the command line is opened in place of the last one used.
+            // A name without a folder is looked for in the label_layout folder. It becomes the
+            // remembered layout only when the settings are next saved, e.g. by printing.
+            if (!string.IsNullOrEmpty(startupFile))
+            {
+                try
+                {
+                    AppSettings.Filename = Path.GetFullPath(startupFile);
+                }
+                catch (Exception ex) when (ex is ArgumentException || ex is NotSupportedException || ex is PathTooLongException)
+                {
+                    MessageBox.Show("Cannot use layout file name " + startupFile + "\n" + ex.Message, "Problem");
+                }
+            }
+
+            // Try to load the layout file
             string fn = AppSettings.Filename;
 
             if (File.Exists(fn))
