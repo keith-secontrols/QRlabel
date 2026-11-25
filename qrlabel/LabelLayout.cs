@@ -129,7 +129,7 @@ namespace a4label
         {
             int len = match.Length - 2;
             string formatter = "X" + len.ToString();
-            string s = ((UInt64)serialNum).ToString("X");
+            string s = ((UInt64)serialNum).ToString(formatter); // zero padded to at least len digits
             s = s.Substring(s.Length - len);
             return text.Replace(match, s);
         }
