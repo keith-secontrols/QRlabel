@@ -38,10 +38,7 @@ namespace a4label
     "text:cx,y-4,[version]\r\n" + // Draw version text
     "text:cx,y-10,[NNNNN]\r\n"; // Draw serial number (moved 1mm up)
 
-        // Single Random instance seeded once at startup
-        private readonly Random rng = new Random();
-
-        // Stores unique random serial numbers for random mode
+        // Random serial numbers for the run being printed or previewed
         private List<decimal> randomSerials = new List<decimal>();
 
         // Tracks which random serial number to use next
@@ -363,7 +360,7 @@ namespace a4label
             if (checkBoxRandomSN.Checked)
             {
                 int totalLabels = (int)numericUpDown2.Value;
-                GenerateUniqueRandomSerials(totalLabels);
+                GenerateRandomSerials(totalLabels);
             }
         }
 
@@ -449,16 +446,6 @@ namespace a4label
             }
         }
 
-        // Generates a random serial number within valid range
-        private decimal makeRandom()
-        {
-            byte[] buffer = new byte[8];
-            rng.NextBytes(buffer);
-            ulong randomLong = BitConverter.ToUInt64(buffer, 0);
-            decimal range = labelLayout1.validSerialMax - labelLayout1.validSerialMin;
-            return (randomLong % range) + labelLayout1.validSerialMin;
-        }
-
         // Handles label layout click (for random serial number mode)
         private void labelLayout1_Click(object sender, EventArgs e)
         {
@@ -469,28 +456,21 @@ namespace a4label
         // Sets next random serial number in the UI
         private void nextRandom()
         {
-            decimal n = makeRandom();
+            decimal n = labelLayout1.makeRandom();
             numericUpDown1.Maximum = n;
             numericUpDown1.Minimum = n;
             numericUpDown1.Value = n;
         }
 
-        // Generates a list of unique random serial numbers for printing
-        private void GenerateUniqueRandomSerials(int count)
+        // Generates the random serial numbers for a print or preview run.
+        // They are not checked for duplicates.
+        private void GenerateRandomSerials(int count)
         {
             randomSerials.Clear();
             randomSerialIndex = 0;
-            decimal min = labelLayout1.validSerialMin;
-            decimal max = labelLayout1.validSerialMax;
-            decimal range = max - min + 1;
 
-            while (randomSerials.Count < count)
-            {
-                byte[] buffer = new byte[8];
-                rng.NextBytes(buffer);
-                decimal candidate = (decimal)(BitConverter.ToUInt64(buffer, 0) % (ulong)range) + min;
-                randomSerials.Add(candidate);
-            }
+            for (int i = 0; i < count; i++)
+                randomSerials.Add(labelLayout1.makeRandom());
         }
 
         // Handles Print Preview menu item click
@@ -511,7 +491,7 @@ namespace a4label
                 if (checkBoxRandomSN.Checked)
                 {
                     int totalLabels = (int)numericUpDown2.Value;
-                    GenerateUniqueRandomSerials(totalLabels);
+                    GenerateRandomSerials(totalLabels);
                     randomSerialIndex = 0;  // Reset index for preview
                 }
 

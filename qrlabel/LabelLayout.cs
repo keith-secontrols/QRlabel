@@ -4,6 +4,7 @@ using System.ComponentModel; // For component model support
 using System.Drawing; // For drawing graphics, colors, etc.
 using System.Data; // For data-related classes (not used here)
 using System.Linq; // For LINQ operations
+using System.Security.Cryptography; // For the random serial number generator
 using System.Text; // For string manipulation
 using System.Threading.Tasks; // For async tasks (not used here)
 using System.Windows.Forms; // For Windows Forms UI components
@@ -443,21 +444,19 @@ namespace a4label
             return fields["[version]"];
         }
 
-        // Generates a random serial number within valid range
-        private decimal makeRandom()
+        // One cryptographic generator for every random serial number. System.Random must not
+        // be used here: it is seeded from the clock, so its output can be predicted and two
+        // instances created in the same clock tick return the same values.
+        private static readonly RandomNumberGenerator serialRng = RandomNumberGenerator.Create();
+
+        // Returns a random serial number from validSerialMin to validSerialMax.
+        // Serials are not checked for duplicates.
+        public decimal makeRandom()
         {
-            decimal randomLong;
-            Random random = new Random();
-            do
-            {
-                byte[] buffer = new byte[8];
-                random.NextBytes(buffer);
-                randomLong = BitConverter.ToUInt64(buffer, 0);
-            } while (randomLong < 1);
-
-            decimal range = validSerialMax - validSerialMin;
-
-            return (randomLong % range) + validSerialMin;
+            byte[] buffer = new byte[8];
+            serialRng.GetBytes(buffer);
+            decimal range = validSerialMax - validSerialMin + 1;
+            return (BitConverter.ToUInt64(buffer, 0) % range) + validSerialMin;
         }
 
         // Draws all label items on the provided graphics canvas
